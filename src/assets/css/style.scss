@@ -1,0 +1,18 @@
+@import "./dimens.scss";
+@import "./reset";
+@import "./colors.scss";
+
+.z-index-heigh {
+  z-index: 999;
+}
+
+.z-index-2 {
+  z-index: 2;
+}
+
+.caret {
+  display: inline-block;
+  border-top: 8px solid red;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+}

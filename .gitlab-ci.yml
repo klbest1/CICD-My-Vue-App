@@ -1,0 +1,50 @@
+image: docker:20.10.22
+
+variables:
+  GIT_SSL_NO_VERIFY: "1"
+stages:
+  - test
+  - build
+  - build-docker
+before_script:
+  - export PACKAGE_VERSION=$(grep '"version":' package.json | cut -d\" -f4)
+  - export NODE_ENV=production
+
+
+building:
+  image: node:10    # 指定运行环境
+  stage: build          # 当前stage阶段为build
+  tags:
+    - docker
+  script:               # build阶段运行的脚本
+    - npm --registry=https://registry.npm.taobao.org install express
+    - npm i
+    - npm run  build
+  artifacts:
+    paths:
+    - dist              # 导出dist
+cache:                  # 缓存
+  paths:                # 路径
+    - node_modules/     # 缓存node_mudules将大大提高ci运行的速度
+
+build-docker:
+  stage: build-docker
+  tags:
+    - docker
+  script:
+    - ls
+    - echo $CI_REGISTRY_IMAGE
+    - echo $CI_REGISTRY
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - echo "docker build"
+    - docker build -t $CI_REGISTRY_IMAGE:$PACKAGE_VERSION .
+    - docker tag $CI_REGISTRY_IMAGE:$PACKAGE_VERSION $CI_REGISTRY_IMAGE
+    - docker push $CI_REGISTRY_IMAGE:$PACKAGE_VERSION
+    - docker push $CI_REGISTRY_IMAGE
+    - docker image rm $CI_REGISTRY_IMAGE
+    - docker image rm $CI_REGISTRY_IMAGE:$PACKAGE_VERSION
+
+  only:
+    - main
+
+
