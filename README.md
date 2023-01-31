@@ -1,9 +1,8 @@
 #  CICD自动构建流程
 
  通过gitlab + docker-compose + nginx + registry 流水线自动构建和发布流程，独立的打包服务环境和线上环境。
-
 ### gitlab 流水线构建
-![image](https://github.com/klbest1/CICD-My-Vue-App/blob/main/images/gitlab-ci.png)
+![image](./images/gitlab-ci.png)
 
 ### gitlab registry 保存docker 镜像
 ![image](https://github.com/klbest1/CICD-My-Vue-App/blob/main/images/docker-image.png)
