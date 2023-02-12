@@ -1,0 +1,38 @@
+      environment:
+        GITLAB_OMNIBUS_CONFIG: |
+          external_url 'http://47.97.97.114:3143'
+          gitlab_rails['gitlab_shell_ssh_port'] = 3122
+          nginx['listen_port'] = 443
+          nginx['redirect_http_to_https'] = false
+          registry_external_url 'http://47.97.97.114:4567'
+          registry_nginx['enable'] = false
+          gitlab_rails['registry_api_url'] = "http://47.97.97.114:4567"
+          gitlab_rails['registry_enabled'] = true
+
+          gitlab_rails['backup_keep_time'] = 172800
+      ports:
+        - '3143:443'
+        - '3122:22'
+      volumes:
+        - '/srv/gitlab/config:/etc/gitlab'
+        - '/srv/gitlab/logs:/var/log/gitlab'
+        - '/srv/gitlab/ssl:/etc/ssl/certs/gitlab'
+        - '/srv/gitlab/data:/var/opt/gitlab'
+      networks:
+        dev-net:
+          aliases:
+            - my.gitlab
+    runner:
+      image: 'gitlab/gitlab-runner:latest'
+      container_name: gitlab-runner
+      restart: always
+      volumes:
+        - '/srv/gitlab-runner:/etc/gitlab-runner'
+        - '/var/run/docker.sock:/var/run/docker.sock'
+      networks:
+        - dev-net
+networks:
+  dev-net:
+    external:
+      name: development
+                                                                                                                               52,11         Bot

@@ -10,7 +10,9 @@
 ### 发布
 ![image](https://github.com/klbest1/CICD-My-Vue-App/blob/main/images/online-app.png)
 
-OnLine 环境只需安装docker即可
+OnLine 需要安装docker，请自行安装。
+
+登录docker
 ```
 docker login -u "yourusername" -p "yourpassword" http://47.97.97.114:4567/  #登录registry
 
